@@ -4,7 +4,7 @@ A complete Tetris game built with HTML, CSS, and JavaScript.
 
 ## Run locally
 
-Open `/home/runner/work/browser-tetris/browser-tetris/index.html` in a desktop browser.
+Open `index.html` from the repository root in a desktop browser.
 
 ## Controls
 

@@ -216,6 +216,7 @@ class TetrisGame {
     this.lockDelay = null;
     this.flashRows = [];
     this.flashUntil = 0;
+    this.turnLocked = false;
     this.bag = [];
     this.currentPiece = this.createRandomPiece();
     this.nextPiece = this.createRandomPiece();
@@ -287,7 +288,13 @@ class TetrisGame {
 
     event.preventDefault();
 
-    if (!this.started || this.paused || this.gameOver || this.flashRows.length) {
+    if (
+      !this.started ||
+      this.paused ||
+      this.gameOver ||
+      this.flashRows.length ||
+      this.turnLocked
+    ) {
       return;
     }
 
@@ -350,6 +357,11 @@ class TetrisGame {
   }
 
   lockPiece() {
+    if (this.turnLocked) {
+      return;
+    }
+
+    this.turnLocked = true;
     this.board.merge(this.currentPiece);
     const fullRows = this.board.findFullRows();
 
@@ -373,6 +385,7 @@ class TetrisGame {
     }
 
     this.dropAccumulator = 0;
+    this.turnLocked = false;
     this.currentPiece = this.nextPiece;
     this.nextPiece = this.createRandomPiece();
 
