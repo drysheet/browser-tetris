@@ -4,7 +4,7 @@ const CELL_SIZE = 30;
 const PREVIEW_CELL = 24;
 const BASE_DROP_INTERVAL = 900;
 const MIN_DROP_INTERVAL = 120;
-const LEVEL_STEP = 1000;
+const LINES_PER_LEVEL = 10;
 const SCORE_TABLE = {
   1: 100,
   2: 300,
@@ -273,16 +273,15 @@ class TetrisGame {
   }
 
   handleInput(event) {
+    const isSpaceRotation = event.code === "Space";
     const handledKeys = [
       "ArrowLeft",
       "ArrowRight",
       "ArrowDown",
       "ArrowUp",
-      " ",
-      "Spacebar",
     ];
 
-    if (!handledKeys.includes(event.key)) {
+    if (!handledKeys.includes(event.key) && !isSpaceRotation) {
       return;
     }
 
@@ -313,7 +312,9 @@ class TetrisGame {
       return;
     }
 
-    this.tryRotate();
+    if (event.key === "ArrowUp" || isSpaceRotation) {
+      this.tryRotate();
+    }
   }
 
   tryMove(offsetX, offsetY) {
@@ -378,7 +379,7 @@ class TetrisGame {
       this.board.clearRows(this.flashRows);
       this.linesCleared += this.flashRows.length;
       this.score += SCORE_TABLE[this.flashRows.length] ?? 0;
-      this.level = Math.floor(this.score / LEVEL_STEP) + 1;
+      this.level = Math.floor(this.linesCleared / LINES_PER_LEVEL) + 1;
       this.flashRows = [];
       this.flashUntil = 0;
       this.updateScoreboard();
