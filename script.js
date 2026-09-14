@@ -285,6 +285,15 @@ class TetrisGame {
       return;
     }
 
+    if (event.target instanceof Element) {
+      const interactiveTarget = event.target.closest(
+        "button, input, select, textarea, a",
+      );
+      if (interactiveTarget) {
+        return;
+      }
+    }
+
     event.preventDefault();
 
     if (
@@ -391,6 +400,7 @@ class TetrisGame {
     this.nextPiece = this.createRandomPiece();
 
     if (this.board.collides(this.currentPiece)) {
+      this.updateScoreboard();
       this.gameOver = true;
       this.started = false;
       this.updateOverlay("Game Over", "Press Restart to try again.", true);
