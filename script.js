@@ -394,7 +394,7 @@ class TetrisGame {
       this.gameOver = true;
       this.started = false;
       this.updateOverlay("Game Over", "Press Restart to try again.", true);
-      this.startPauseButton.textContent = "Start";
+      this.startPauseButton.textContent = "Restart";
     }
   }
 
@@ -407,6 +407,7 @@ class TetrisGame {
   updateOverlay(title, text, visible) {
     this.overlayTitle.textContent = title;
     this.overlayText.textContent = text;
+    this.overlay.setAttribute("aria-hidden", String(!visible));
     this.overlay.classList.toggle("hidden", !visible);
   }
 
