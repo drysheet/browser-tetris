@@ -253,7 +253,9 @@ class TetrisGame {
     const types = Object.keys(TETROMINOES);
     for (let index = types.length - 1; index > 0; index -= 1) {
       const randomIndex = Math.floor(Math.random() * (index + 1));
-      [types[index], types[randomIndex]] = [types[randomIndex], types[index]];
+      const nextType = types[index];
+      types[index] = types[randomIndex];
+      types[randomIndex] = nextType;
     }
     return types;
   }
@@ -385,9 +387,10 @@ class TetrisGame {
 
   finishTurn() {
     if (this.flashRows.length) {
+      const scoringLevel = this.level;
       this.board.clearRows(this.flashRows);
       this.linesCleared += this.flashRows.length;
-      this.score += SCORE_TABLE[this.flashRows.length] ?? 0;
+      this.score += (SCORE_TABLE[this.flashRows.length] ?? 0) * scoringLevel;
       this.level = Math.floor(this.linesCleared / LINES_PER_LEVEL) + 1;
       this.flashRows = [];
       this.flashUntil = 0;
